@@ -31,12 +31,14 @@ class Roll(Effect):
 
     def run(self, autoctx):
         super().run(autoctx)
-        d = autoctx.args.join("d", "+", ephem=True)
-        maxdmg = autoctx.args.last("max", None, bool, ephem=True)
-        mi = autoctx.args.last("mi", None, int)
+        args = autoctx.args
+        d = args.join("d", "+", ephem=True)
+        maxdmg = args.last("max", None, bool, ephem=True)
+        mi = args.last("mi", None, int)
+        noeffect = args.last("noeffect", type_=bool)
 
         # add on combatant damage effects (#224)
-        if autoctx.combatant:
+        if autoctx.combatant and not noeffect:
             effect_d = "+".join(autoctx.combatant.active_effects("d"))
             if effect_d:
                 if d:

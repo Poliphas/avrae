@@ -50,6 +50,7 @@ class Damage(Effect):
         dtype_args = args.get("dtype", [], ephem=True)
         critdice = sum(args.get("critdice", type_=int))
         hide = args.last("h", type_=bool)
+        noeffect = args.last("noeffect", type_=bool)
 
         # character-specific arguments
         if autoctx.character and "critdice" not in args:
@@ -65,7 +66,7 @@ class Damage(Effect):
             return
 
         # add on combatant damage effects (#224)
-        if autoctx.combatant:
+        if autoctx.combatant and not noeffect:
             d_args.extend(autoctx.combatant.active_effects("d"))
 
         # check if we actually need to care about the -d tag
@@ -111,10 +112,10 @@ class Damage(Effect):
         # magic arg (#853), magical effect (#1063)
         # silvered arg (#1544)
         always = set()
-        magical_effect = autoctx.combatant and autoctx.combatant.active_effects("magical")
+        magical_effect = autoctx.combatant and autoctx.combatant.active_effects("magical") and not noeffect
         if magical_effect or autoctx.is_spell or magic_arg:
             always.add("magical")
-        silvered_effect = autoctx.combatant and autoctx.combatant.active_effects("silvered")
+        silvered_effect = autoctx.combatant and autoctx.combatant.active_effects("silvered") and not noeffect
         if silvered_effect or silvered_arg:
             always.add("silvered")
         # dtype transforms/overrides (#876)

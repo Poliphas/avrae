@@ -41,6 +41,7 @@ def run_check(skill_key, caster, args, embed):
     skill = caster.skills[skill_key]
     skill_name = camel_to_title(skill_key)
     mod = skill.value
+    noeffect = args.last("noeffect", type_=bool)
 
     # str/dex/con/int/wis/cha
     if any(args.last(s, type_=bool) for s in STAT_ABBREVIATIONS):
@@ -57,7 +58,7 @@ def run_check(skill_key, caster, args, embed):
         embed.title = f"{caster.get_title_name()} makes {a_or_an(skill_name)} check!"
 
     # ieffect -cb
-    if isinstance(caster, init.Combatant):
+    if isinstance(caster, init.Combatant) and not noeffect:
         args["b"] = args.get("b") + caster.active_effects("cb")
 
     result = _run_common(skill, args, embed, mod_override=mod)
@@ -90,6 +91,8 @@ def run_save(save_key, caster, args, embed):
         except ValueError:
             raise InvalidArgument("That's not a valid save.")
 
+    noeffect = args.last("noeffect", type_=bool)
+
     # -title
     if args.last("title"):
         embed.title = args.last("title", "").replace("[name]", caster.get_title_name()).replace("[sname]", save_name)
@@ -99,7 +102,7 @@ def run_save(save_key, caster, args, embed):
         embed.title = f"{caster.get_title_name()} makes {a_or_an(save_name)}!"
 
     # ieffect handling
-    if isinstance(caster, init.Combatant):
+    if isinstance(caster, init.Combatant) and not noeffect:
         # -sb
         args["b"] = args.get("b") + caster.active_effects("sb")
         # -sadv/sdis

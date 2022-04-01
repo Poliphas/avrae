@@ -13,6 +13,7 @@ __Valid Arguments__
 -mc <minimum roll> - Sets the minimum roll on the dice (e.g. Reliable Talent, Glibness)
 -rr <iterations> - How many checks to roll.
 str/dex/con/int/wis/cha - Rolls using a different skill base (e.g. Strength (Intimidation))
+noeffect - Ignores bonuses added by ieffects.
 
 -phrase <phrase> - Adds flavor text.
 -title <title> - Changes the title of the attack. Replaces [name] with caster's name and [cname] with the check's name.
@@ -32,6 +33,7 @@ __Valid Arguments__
 -dc <dc> - Sets a DC and counts successes/failures.
 -mc <minimum roll> - Sets the minimum roll on the dice (e.g. Starry Form: Dragon, Trance of Order)
 -rr <iterations> - How many saves to roll (does not apply to Death Saves).
+noeffect - Ignores bonuses added by ieffects.
 
 -phrase <phrase> - Adds flavor text.
 -title <title> - Changes the title of the attack. Replaces [name] with caster's name and [sname] with the save's name.
@@ -100,6 +102,7 @@ nopact - Uses a normal spell slot instead of a Pact Magic slot, if applicable.
 -i - Skips using any resources.
 
 **Other**
+noeffect - Ignores bonuses added by ieffects.
 -h - Hides rolled values.
 -phrase <phrase> - Adds flavor text.
 -title <title> - Changes the title of the attack. Replaces [name] with the caster's name, [aname] with the action's name, and [verb] with the action's verb.

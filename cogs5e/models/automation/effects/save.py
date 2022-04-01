@@ -39,11 +39,13 @@ class Save(Effect):
             )
 
         # ==== args ====
-        save = autoctx.args.last("save") or self.stat
-        sb = autoctx.args.get("sb", ephem=True)
-        auto_pass = autoctx.args.last("pass", type_=bool, ephem=True)
-        auto_fail = autoctx.args.last("fail", type_=bool, ephem=True)
-        hide = autoctx.args.last("h", type_=bool)
+        args = autoctx.args
+        save = args.last("save") or self.stat
+        sb = args.get("sb", ephem=True)
+        auto_pass = args.last("pass", type_=bool, ephem=True)
+        auto_fail = args.last("fail", type_=bool, ephem=True)
+        hide = args.last("h", type_=bool)
+        noeffect = args.last("noeffect", type_=bool)
 
         # ==== dc ====
         dc_override = None
@@ -78,7 +80,7 @@ class Save(Effect):
             raise InvalidSaveType()
 
         # ==== ieffects ====
-        if autoctx.target.combatant:
+        if autoctx.target.combatant and not noeffect:
             # Combine args/ieffect advantages - adv/dis (#1552)
             sadv_effects = autoctx.target.combatant.active_effects("sadv")
             sdis_effects = autoctx.target.combatant.active_effects("sdis")
@@ -108,7 +110,7 @@ class Save(Effect):
                 is_success = False
                 autoctx.queue(f"**{save_blurb}:** Automatic failure!")
             else:
-                save_dice = autoctx.target.get_save_dice(save_skill, adv=adv, sb=sb)
+                save_dice = autoctx.target.get_save_dice(save_skill, adv=adv, sb=sb, noeffect=noeffect)
                 save_roll = d20.roll(save_dice)
                 is_success = save_roll.total >= dc
 

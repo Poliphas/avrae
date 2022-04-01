@@ -48,6 +48,7 @@ class Attack(Effect):
         miss = (args.last("miss", None, bool, ephem=True) and not hit) and 1
         b = args.join("b", "+", ephem=True)
         hide = args.last("h", type_=bool)
+        noeffect = args.last("noeffect", type_=bool)
 
         reroll = args.last("reroll", 0, int)
         criton = args.last("criton", 20, int)
@@ -71,7 +72,7 @@ class Attack(Effect):
                 raise AutomationException(f"{self.adv!r} cannot be interpreted as an advantage type.")
 
         # check for combatant IEffects
-        if autoctx.combatant:
+        if autoctx.combatant and not noeffect:
             # bonus (#224)
             effect_b = "+".join(autoctx.combatant.active_effects("b"))
             if effect_b and b:
